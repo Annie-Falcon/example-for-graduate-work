@@ -14,7 +14,6 @@ import ru.skypro.homework.dto.CreateOrUpdateComment;
 @RestController
 @RequestMapping("/ads/{adId}/comments")
 public class CommentController {
-
     @Operation(summary = "Получение комментариев объявления")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Список комментариев",
             content = @Content(schema = @Schema(implementation = Comments.class))),

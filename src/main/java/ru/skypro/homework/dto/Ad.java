@@ -6,7 +6,6 @@ import lombok.Data;
 @Schema
 @Data
 public class Ad {
-
     @Schema(description = "id автора объявления", example = "1")
     private Integer author;
     @Schema(description = "Ссылка на картинку объявления", example = "https://example.com/image.jpg")

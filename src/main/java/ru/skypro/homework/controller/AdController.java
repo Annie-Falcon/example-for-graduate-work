@@ -15,7 +15,6 @@ import ru.skypro.homework.dto.ExtendedAd;
 @RestController
 @RequestMapping("/ads")
 public class AdController {
-
     @Operation(summary = "Получение всех объявлений")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Список объявлений",
             content = @Content(schema = @Schema(implementation = Ads.class))) })

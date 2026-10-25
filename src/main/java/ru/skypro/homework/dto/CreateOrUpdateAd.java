@@ -6,7 +6,6 @@ import lombok.Data;
 @Schema
 @Data
 public class CreateOrUpdateAd {
-
     @Schema(description = "Заголовок объявления", example = "Ноутбук", requiredMode = Schema.RequiredMode.REQUIRED)
     private String title;
     @Schema(description = "Цена объявления", example = "70000", requiredMode = Schema.RequiredMode.REQUIRED)

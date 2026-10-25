@@ -1,5 +1,9 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,9 +21,11 @@ import ru.skypro.homework.service.AuthService;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
-
     private final AuthService authService;
 
+    @Operation(summary = "Авторизация пользователя", description = "Возвращает 200 OK при успешной авторизации")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Успешная авторизация"),
+            @ApiResponse(responseCode = "401", description = "Неверный логин или пароль", content = @Content) })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login) {
         if (authService.login(login.getUsername(), login.getPassword())) {
@@ -29,6 +35,9 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Регистрация пользователя", description = "Создает нового пользователя")
+    @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Пользователь успешно создан"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации данных", content = @Content) })
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Register register) {
         if (authService.register(register)) {

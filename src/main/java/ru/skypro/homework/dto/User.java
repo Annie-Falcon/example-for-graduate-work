@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class User {
-
     @Schema(description = "ID пользователя", example = "1")
     private Integer id;
     @Schema(description = "Email пользователя", example = "user@gmail.com")

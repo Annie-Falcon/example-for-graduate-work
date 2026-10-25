@@ -6,7 +6,6 @@ import lombok.Data;
 @Schema
 @Data
 public class Comment {
-
     @Schema(description = "id автора объявления", example = "1")
     private Integer author;
     @Schema(description = "Ссылка на аватар автора комментария", example = "https://example.com/image.jpg")

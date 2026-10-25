@@ -46,7 +46,6 @@
           <artifactId>springdoc-openapi-ui</artifactId>
           <version>1.6.14</version>
       </dependency>
-
     <!--suppress VulnerableLibrariesLocal -->
     <dependency>
       <groupId>com.h2database</groupId>

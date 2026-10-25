@@ -14,7 +14,6 @@ import ru.skypro.homework.dto.User;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
     @Operation(summary = "Обновление пароля")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Пароль обновлен"),
             @ApiResponse(responseCode = "401", description = "Неверный текущий пароль", content = @Content),

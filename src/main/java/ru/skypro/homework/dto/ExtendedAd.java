@@ -6,7 +6,6 @@ import lombok.Data;
 @Schema
 @Data
 public class ExtendedAd {
-
     @Schema(description = "id объявления", example = "134")
     private Integer pk;
     @Schema(description = "Имя автора объявления", example = "Иван")
