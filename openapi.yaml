@@ -153,60 +153,6 @@ paths:
                 $ref: '#/components/schemas/Ad'
         '401':
           description: Unauthorized
-  /ads/{id}/comments:
-    get:
-      tags:
-        - Комментарии
-      summary: 'Получение комментариев объявления'
-      operationId: getComments
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Comments'
-        '401':
-          description: Unauthorized
-        '404':
-          description: Not found
-
-    post:
-      tags:
-        - Комментарии
-      summary: 'Добавление комментария к объявлению'
-      operationId: addComment
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateOrUpdateComment'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Comment'
-        '401':
-          description: Unauthorized
-        '404':
-          description: Not found
-
   /ads/{id}:
     get:
       tags:
@@ -282,6 +228,114 @@ paths:
           description: Unauthorized
         '404':
           description: Not found
+  /ads/me:
+    get:
+      tags:
+        - Объявления
+      summary: 'Получение объявлений авторизованного пользователя'
+      operationId: getAdsMe
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ads'
+          description: OK
+        '401':
+          description: Unauthorized
+  /ads/{id}/image:
+    patch:
+      tags:
+        - Объявления
+      summary: 'Обновление картинки объявления'
+      operationId: updateImage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - image
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: byte
+        '403':
+          description: Forbidden
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
+  /ads/{id}/comments:
+    get:
+      tags:
+        - Комментарии
+      summary: 'Получение комментариев объявления'
+      operationId: getComments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comments'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
+
+    post:
+      tags:
+        - Комментарии
+      summary: 'Добавление комментария к объявлению'
+      operationId: addComment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateComment'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
   /ads/{adId}/comments/{commentId}:
     delete:
       tags:
@@ -346,63 +400,6 @@ paths:
           description: Unauthorized
         '404':
           description: Not found
-
-  /ads/me:
-    get:
-      tags:
-        - Объявления
-      summary: 'Получение объявлений авторизованного пользователя'
-      operationId: getAdsMe
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ads'
-          description: OK
-        '401':
-          description: Unauthorized
-  /ads/{id}/image:
-    patch:
-      tags:
-        - Объявления
-      summary: 'Обновление картинки объявления'
-      operationId: updateImage
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              required:
-                - image
-              type: object
-              properties:
-                image:
-                  type: string
-                  format: binary
-      responses:
-        '200':
-          description: OK
-          content:
-            application/octet-stream:
-              schema:
-                type: array
-                items:
-                  type: string
-                  format: byte
-        '403':
-          description: Forbidden
-        '401':
-          description: Unauthorized
-        '404':
-          description: Not found
-
 components:
   schemas:
     NewPassword:
