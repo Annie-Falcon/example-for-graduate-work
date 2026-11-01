@@ -15,7 +15,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewPassword'
+              $ref: '#/components/schemas/NewPasswordRequest'
       responses:
         '200':
           description: OK
@@ -34,7 +34,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserResponse'
           description: OK
         '401':
           description: Unauthorized
@@ -47,14 +47,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUser'
+              $ref: '#/components/schemas/UpdateUserRequest'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateUser'
+                $ref: '#/components/schemas/UpdateUserRequest'
         '401':
           description: Unauthorized
   /users/me/image:
@@ -124,7 +124,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ads'
+                $ref: '#/components/schemas/AdsResponse'
     post:
       tags:
         - Объявления
@@ -140,7 +140,7 @@ paths:
               type: object
               properties:
                 properties:
-                  $ref: '#/components/schemas/CreateOrUpdateAd'
+                  $ref: '#/components/schemas/CreateOrUpdateAdRequest'
                 image:
                   type: string
                   format: binary
@@ -150,7 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ad'
+                $ref: '#/components/schemas/AdResponse'
         '401':
           description: Unauthorized
   /ads/{id}/comments:
@@ -172,7 +172,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comments'
+                $ref: '#/components/schemas/CommentsResponse'
         '401':
           description: Unauthorized
         '404':
@@ -194,14 +194,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrUpdateComment'
+              $ref: '#/components/schemas/CreateOrUpdateCommentRequest'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentResponse'
         '401':
           description: Unauthorized
         '404':
@@ -226,7 +226,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExtendedAd'
+                $ref: '#/components/schemas/ExtendedAdResponse'
         '401':
           description: Unauthorized
         '404':
@@ -268,14 +268,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrUpdateAd'
+              $ref: '#/components/schemas/CreateOrUpdateAdRequest'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ad'
+                $ref: '#/components/schemas/AdResponse'
         '403':
           description: Forbidden
         '401':
@@ -332,14 +332,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrUpdateComment'
+              $ref: '#/components/schemas/CreateOrUpdateCommentRequest'
       responses:
         '200':
           description: OK
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentResponse'
         '403':
           description: Forbidden
         '401':
@@ -358,7 +358,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ads'
+                $ref: '#/components/schemas/AdsResponse'
           description: OK
         '401':
           description: Unauthorized
@@ -593,7 +593,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Ad'
+            $ref: '#/components/schemas/AdResponse'
     ExtendedAd:
       type: object
       properties:
@@ -636,4 +636,4 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Comment'
+            $ref: '#/components/schemas/CommentResponse'
