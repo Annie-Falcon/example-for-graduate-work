@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Schema
 @Data
-public class NewPassword {
+public class NewPasswordRequest {
     @Schema(description = "Текущий пароль пользователя", example = "password123", requiredMode = Schema.RequiredMode.REQUIRED)
     private String currentPassword;
     @Schema(description = "Новый пароль пользователя", example = "password321", requiredMode = Schema.RequiredMode.REQUIRED)
