@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Schema
 @Data
-public class UpdateUser {
+public class UpdateUserRequest {
     @Schema(description = "Имя пользователя", example = "Иван", requiredMode = Schema.RequiredMode.REQUIRED)
     private String firstName;
     @Schema(description = "Фамилия пользователя", example = "Иванов", requiredMode = Schema.RequiredMode.REQUIRED)

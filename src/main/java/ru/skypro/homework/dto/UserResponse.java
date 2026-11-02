@@ -2,9 +2,11 @@ package ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
-public class User {
+@Schema(description = "Пользователь")
+@Getter
+public class UserResponse {
     @Schema(description = "ID пользователя", example = "1")
     private Integer id;
     @Schema(description = "Email пользователя", example = "user@gmail.com")

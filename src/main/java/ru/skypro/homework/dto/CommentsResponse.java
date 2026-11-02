@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Schema
 @Data
-public class Comments {
+public class CommentsResponse {
     @Schema(description = "общее количество комментариев", example = "20")
     private Integer count;
     @Schema(description = "Комментарии")
-    private Comment results;
+    private CommentResponse results;
 }

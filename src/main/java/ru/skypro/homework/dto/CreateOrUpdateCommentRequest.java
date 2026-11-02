@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Schema
 @Data
-public class CreateOrUpdateComment {
+public class CreateOrUpdateCommentRequest {
     @Schema(description = "Текст комментария", example = "новый комментарий", requiredMode = Schema.RequiredMode.REQUIRED)
     private String text;
 }
