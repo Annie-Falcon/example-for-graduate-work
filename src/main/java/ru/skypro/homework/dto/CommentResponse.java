@@ -3,6 +3,8 @@ package ru.skypro.homework.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Schema
 @Data
 public class CommentResponse {
@@ -13,7 +15,7 @@ public class CommentResponse {
     @Schema(description = "Имя создателя комментария", example = "Иван")
     private String authorFirstName;
     @Schema(description = "Дата и время создания комментария в миллисекундах", example = "01:10:11 01.01.2026")
-    private Integer createdAt;
+    private LocalDateTime createdAt;
     @Schema(description = "id комментария", example = "134")
     private Integer pk;
     @Schema(description = "Текст комментария", example = "комментарий новый")

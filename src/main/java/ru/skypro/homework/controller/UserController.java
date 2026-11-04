@@ -5,46 +5,62 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.NewPasswordRequest;
 import ru.skypro.homework.dto.UpdateUserRequest;
 import ru.skypro.homework.dto.UserResponse;
+import ru.skypro.homework.service.UserService;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
+    private final UserService service;
+
     @Operation(summary = "Обновление пароля")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Пароль обновлен"),
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Пароль обновлен"),
             @ApiResponse(responseCode = "401", description = "Неверный текущий пароль", content = @Content),
-            @ApiResponse(responseCode = "403", description = "Доступ запрещен", content = @Content) })
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен", content = @Content)})
     @PostMapping("/set_password")
-    public ResponseEntity<?> setPassword(@RequestBody NewPasswordRequest newPasswordRequest) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> setPassword(@Valid @RequestBody NewPasswordRequest newPasswordRequest, Authentication auth) {
+        if (service.changePassword(newPasswordRequest, auth)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Operation(summary = "Получение информации об авторизованном пользователе")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Данные пользователя", content = @Content(schema = @Schema(implementation = UserResponse.class)))
-            , @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content) })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Данные пользователя", content = @Content(schema = @Schema(implementation = UserResponse.class)))
+            , @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content)})
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getUser() {
-        return ResponseEntity.ok(new UserResponse());
+    public ResponseEntity<UserResponse> getUser(Authentication auth) {
+        return ResponseEntity.ok(service.getCurrentUser(auth));
     }
 
     @Operation(summary = "Обновление информации об авторизованном пользователе")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Данные обновлены",
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Данные обновлены",
             content = @Content(schema = @Schema(implementation = UpdateUserRequest.class))),
-            @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content) })
+            @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content)})
     @PatchMapping("/me")
-    public ResponseEntity<UpdateUserRequest> updateUser(@RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<UpdateUserRequest> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest,
+                                                        Authentication auth) {
+        service.update(updateUserRequest, auth);
+
         return ResponseEntity.ok(updateUserRequest);
     }
 
     @Operation(summary = "Обновление аватара авторизованного пользователя", description = "Принимает файл изображения")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Аватар обновлен"),
-            @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content) })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Аватар обновлен"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content)})
     @PatchMapping("/me/image")
-    public ResponseEntity<?> updateUserImage(@RequestBody String image) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> updateUserImage(@RequestBody String image,
+                                             Authentication auth) {
+        return service.updateAvatar(image, auth);
     }
 }

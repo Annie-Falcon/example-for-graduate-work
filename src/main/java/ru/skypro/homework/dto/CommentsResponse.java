@@ -3,6 +3,8 @@ package ru.skypro.homework.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 @Schema
 @Data
 public class CommentsResponse {
@@ -10,4 +12,8 @@ public class CommentsResponse {
     private Integer count;
     @Schema(description = "Комментарии")
     private CommentResponse results;
+
+    public CommentsResponse(int size, List<CommentResponse> dtoList) {  }
+
+    public CommentsResponse() {  }
 }
