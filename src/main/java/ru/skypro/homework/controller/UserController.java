@@ -6,15 +6,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordRequest;
 import ru.skypro.homework.dto.UpdateUserRequest;
 import ru.skypro.homework.dto.UserResponse;
 import ru.skypro.homework.service.UserService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/users")
@@ -58,9 +61,9 @@ public class UserController {
     @Operation(summary = "Обновление аватара авторизованного пользователя", description = "Принимает файл изображения")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Аватар обновлен"),
             @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content)})
-    @PatchMapping("/me/image")
-    public ResponseEntity<?> updateUserImage(@RequestBody String image,
-                                             Authentication auth) {
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateUserImage(@RequestBody MultipartFile image,
+                                             Authentication auth) throws IOException {
         return service.updateAvatar(image, auth);
     }
 }

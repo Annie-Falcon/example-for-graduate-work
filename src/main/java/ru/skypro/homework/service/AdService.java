@@ -2,11 +2,13 @@ package ru.skypro.homework.service;
 
 
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.CreateOrUpdateAdRequest;
 import ru.skypro.homework.dto.AdResponse;
 import ru.skypro.homework.dto.AdsResponse;
 import ru.skypro.homework.dto.ExtendedAdResponse;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public interface AdService {
@@ -22,5 +24,5 @@ public interface AdService {
 
     AdsResponse getByUserId(Authentication auth);
 
-    boolean setImage(Integer id, String image);
+    void setImage(Integer id, MultipartFile file) throws IOException;
 }

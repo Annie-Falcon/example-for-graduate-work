@@ -1,10 +1,10 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdResponse;
 import ru.skypro.homework.dto.AdsResponse;
 import ru.skypro.homework.dto.CreateOrUpdateAdRequest;
@@ -14,9 +14,11 @@ import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.utils.ImageStorageService;
 
-import java.util.Base64;
+import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -26,6 +28,7 @@ public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final AdMapper adMapper;
     private final UserRepository userRepository;
+    private final ImageStorageService imageStorage;
 
     @Override
     public AdsResponse getAll() { // GET /ads
@@ -57,7 +60,6 @@ public class AdServiceImpl implements AdService {
         return adMapper.toDto(adRepository.save(ad));
     }
 
-    @PreAuthorize("#ad.author.email == authentication.name or hasAuthority('ROLE_ADMIN')")
     @Transactional
     @Override
     public Optional<AdResponse> update(Integer id, CreateOrUpdateAdRequest adRequest) {
@@ -67,7 +69,6 @@ public class AdServiceImpl implements AdService {
         });
     }
 
-    @PreAuthorize("#ad.author.email == authentication.name or hasAuthority('ROLE_ADMIN')")
     @Transactional
     @Override
     public void delete(Integer id) {
@@ -78,14 +79,15 @@ public class AdServiceImpl implements AdService {
         adRepository.deleteById(id);
     }
 
-    @Override
     @Transactional
-    public boolean setImage(Integer id, String image) {
-        return adRepository.findById(id).map(ad -> {
-            // Здесь должна быть логика сохранения файла и обновления ссылки
-            //ad.setImage("data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imageData));
-            adRepository.save(ad);
-            return true;
-        }).orElse(false);
+    @Override
+    public void setImage(Integer id, MultipartFile file) throws IOException {
+        AdEntity ad = adRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Объявление не найдено"));
+
+        // сохранить файл на диск и получить путь
+        String savedPath = imageStorage.save(file, "ADS");
+        ad.setImage(savedPath);
+        adRepository.save(ad);
     }
 }

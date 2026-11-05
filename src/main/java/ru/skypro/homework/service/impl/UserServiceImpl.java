@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordRequest;
 import ru.skypro.homework.dto.UpdateUserRequest;
 import ru.skypro.homework.dto.UserResponse;
@@ -15,7 +16,9 @@ import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.utils.ImageStorageService;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 @Service
@@ -24,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper;
+    private final ImageStorageService imageStorage;
 
     @Override
     public UserResponse getCurrentUser(Authentication auth) { //GET /users/me
@@ -43,9 +47,12 @@ public class UserServiceImpl implements UserService {
 
     @PreAuthorize("#user.email == authentication.name or hasAuthority('ROLE_ADMIN')")
     @Override
-    public ResponseEntity<?> updateAvatar(String image, Authentication auth) { // PATCH /users/me/image
+    public ResponseEntity<?> updateAvatar(MultipartFile file, Authentication auth) throws IOException { // PATCH /users/me/image
         UserEntity user = userRepo.findByEmail(auth.getName()).orElseThrow(NoSuchElementException::new);
-        // Здесь должна быть логика сохранения файла на диск или в облако
+        // сохранить файл на диск и получить путь
+        String savedPath = imageStorage.save(file, "AVATAR");
+        user.setImage(savedPath);
+        userRepo.save(user);
         return ResponseEntity.ok().build();
     }
 
