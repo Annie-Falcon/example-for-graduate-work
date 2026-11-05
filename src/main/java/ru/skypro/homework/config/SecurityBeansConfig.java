@@ -10,6 +10,6 @@ public class SecurityBeansConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12); // Не забудь про сложность хеширования!
+        return new BCryptPasswordEncoder(12); // безопасное хеширование паролей пользователей перед их сохранением в базу данных
     }
 }

@@ -7,16 +7,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdResponse;
 import ru.skypro.homework.dto.AdsResponse;
 import ru.skypro.homework.dto.CreateOrUpdateAdRequest;
 import ru.skypro.homework.dto.ExtendedAdResponse;
 import ru.skypro.homework.service.AdService;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -102,9 +105,11 @@ public class AdController {
             @ApiResponse(responseCode = "401", description = "Не авторизован", content = @Content),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен", content = @Content),
             @ApiResponse(responseCode = "404", description = "Объявление не найдено", content = @Content)})
-    @PatchMapping("/{id}/image")
-    public ResponseEntity<?> updateImage(@PathVariable Integer id, @RequestPart("image") String image) {
-        boolean result = adService.setImage(id, image);
+    @PreAuthorize("#ad.author.email == authentication.name or hasAuthority('ROLE_ADMIN')")
+    @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateImage(@PathVariable Integer id,
+                                            @RequestPart("image") MultipartFile image) throws IOException {
+        adService.setImage(id, image);
         return ResponseEntity.ok().build();
     }
 }

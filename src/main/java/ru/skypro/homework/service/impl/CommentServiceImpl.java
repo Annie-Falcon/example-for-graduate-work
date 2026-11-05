@@ -1,7 +1,6 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +51,6 @@ public class CommentServiceImpl implements CommentService {
         return mapper.toDto(commentRepo.save(entity)); // Сохраняем и маппим обратно в DTO
     }
 
-    @PreAuthorize("#comment.author.email == authentication.name or hasAuthority('ROLE_ADMIN')")
     @Transactional
     @Override
     public boolean delete(Integer id) {
@@ -63,7 +61,6 @@ public class CommentServiceImpl implements CommentService {
         return false;
     }
 
-    @PreAuthorize("#comment.author.email == authentication.name or hasAuthority('ROLE_ADMIN')")
     @Transactional
     @Override
     public Optional<CommentResponse> update(Integer id, CreateOrUpdateCommentRequest textComment) { // PATCH /ads/{adId}/comments/{commentId}
