@@ -24,8 +24,8 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "Авторизация пользователя", description = "Возвращает 200 OK при успешной авторизации")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Успешная авторизация"),
-            @ApiResponse(responseCode = "401", description = "Неверный логин или пароль", content = @Content) })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Успешная авторизация"),
+            @ApiResponse(responseCode = "401", description = "Неверный логин или пароль", content = @Content)})
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login) {
         if (authService.login(login.getUsername(), login.getPassword())) {
@@ -36,8 +36,8 @@ public class AuthController {
     }
 
     @Operation(summary = "Регистрация пользователя", description = "Создает нового пользователя")
-    @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Пользователь успешно создан"),
-            @ApiResponse(responseCode = "400", description = "Ошибка валидации данных", content = @Content) })
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Пользователь успешно создан"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации данных", content = @Content)})
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Register register) {
         if (authService.register(register)) {
@@ -45,6 +45,5 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
     }
 }
